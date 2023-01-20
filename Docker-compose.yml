@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  simple-bank:
+    image: "postgres:14.2"
+    ports:
+      - "5432:5432"
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: simple-bank
