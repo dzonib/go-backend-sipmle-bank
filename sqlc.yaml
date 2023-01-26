@@ -16,5 +16,5 @@ sql:
     schema: "./db/migration/"
     gen:
       go:
-        package: "tutorial"
-        out: "tutorial"
+        package: "db"
+        out: "./db/sqlc"

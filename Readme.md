@@ -20,6 +20,9 @@ docker logs postgres12
 
 migrate create -ext sql -dir db/migration -seq init_schema
 
+* `-ext sql` - extension sql 
+* `-seq` generate sequential version number for the migration file
+
 # execute shell when container is running
 
 docker exec -it postgres12 /bin/sh

@@ -18,9 +18,9 @@ INSERT INTO accounts (
 `
 
 type CreateAccountParams struct {
-	Owner    string `json:"owner"`
-	Balance  int64  `json:"balance"`
-	Currency string `json:"currency"`
+	Owner    string
+	Balance  int64
+	Currency string
 }
 
 func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (Account, error) {
@@ -34,6 +34,16 @@ func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (A
 		&i.CreatedAt,
 	)
 	return i, err
+}
+
+const deleteAccount = `-- name: DeleteAccount :exec
+DELETE FROM accounts
+WHERE id = $1
+`
+
+func (q *Queries) DeleteAccount(ctx context.Context, id int64) error {
+	_, err := q.db.ExecContext(ctx, deleteAccount, id)
+	return err
 }
 
 const getAccount = `-- name: GetAccount :one
@@ -62,8 +72,8 @@ OFFSET $2
 `
 
 type ListAccountsParams struct {
-	Limit  int32 `json:"limit"`
-	Offset int32 `json:"offset"`
+	Limit  int32
+	Offset int32
 }
 
 func (q *Queries) ListAccounts(ctx context.Context, arg ListAccountsParams) ([]Account, error) {
@@ -95,18 +105,18 @@ func (q *Queries) ListAccounts(ctx context.Context, arg ListAccountsParams) ([]A
 	return items, nil
 }
 
-const updateAuthor = `-- name: UpdateAuthor :exec
+const updateAccount = `-- name: UpdateAccount :exec
 UPDATE accounts
-SET balance = $2
+SET  balance = $2
 WHERE id = $1
 `
 
-type UpdateAuthorParams struct {
-	ID      int64 `json:"id"`
-	Balance int64 `json:"balance"`
+type UpdateAccountParams struct {
+	ID      int64
+	Balance int64
 }
 
-func (q *Queries) UpdateAuthor(ctx context.Context, arg UpdateAuthorParams) error {
-	_, err := q.db.ExecContext(ctx, updateAuthor, arg.ID, arg.Balance)
+func (q *Queries) UpdateAccount(ctx context.Context, arg UpdateAccountParams) error {
+	_, err := q.db.ExecContext(ctx, updateAccount, arg.ID, arg.Balance)
 	return err
 }
