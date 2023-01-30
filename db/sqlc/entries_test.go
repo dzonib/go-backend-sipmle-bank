@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 	"simple-bank/util"
 	"testing"
 	"time"
@@ -9,10 +10,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-//	type CreateEntryParams struct {
-//		AccountID int64
-//		Amount    int64
-//	}
 func createRandomEntry(t *testing.T) Entry {
 	account := createRandomAccount(t)
 
@@ -81,6 +78,7 @@ func TestDeleteEntry(t *testing.T) {
 	deletedEntry, err := testQueries.GetEntry(context.Background(), entry.ID)
 
 	require.Error(t, err)
+	require.EqualError(t, err, sql.ErrNoRows.Error())
 	require.Empty(t, deletedEntry)
 }
 
